@@ -1,6 +1,6 @@
 services:
   expense-tracker:
-    image: expense-tracker:latest
+    image: ghcr.io/kalutes/expense_tracker:latest
     build:
       context: .
       dockerfile: Dockerfile
