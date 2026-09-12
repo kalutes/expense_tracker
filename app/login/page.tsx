@@ -23,134 +23,117 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Login failed');
+        setError(data.error || 'Authentication failed');
         setIsPending(false);
       } else {
         window.location.href = '/';
       }
     } catch {
-      setError('Network error connecting to server');
+      setError('Network error connecting to ledger server');
       setIsPending(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12 text-slate-100">
-      {/* Background glow effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative w-full max-w-md">
-        {/* Main Card */}
-        <div className="bg-slate-900/80 border border-slate-800 backdrop-blur-xl rounded-2xl p-8 shadow-2xl shadow-black/50">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 mb-4 shadow-inner">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
+    <div className="min-h-screen bg-[#090d13] text-[#e6edf3] flex flex-col items-center justify-center p-4 font-sans selection:bg-cyan-900 selection:text-cyan-200">
+      <div className="w-full max-w-md">
+        {/* Terminal Card */}
+        <div className="bg-[#0d1117] border border-[#30363d] rounded-2xl overflow-hidden shadow-2xl">
+          {/* Card Header */}
+          <div className="px-6 py-4 border-b border-[#30363d] bg-[#161b22] flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="px-2 py-0.5 bg-[#090d13] border border-[#30363d] rounded text-emerald-400 font-mono text-xs font-bold tracking-tight">
+                &gt;_
+              </div>
+              <h1 className="text-xs font-bold font-mono tracking-tight text-white flex items-center gap-2">
+                <span>EXPENSE_TRACKER</span>
+                <span className="text-[10px] font-normal px-1.5 py-0.2 bg-[#21262d] text-slate-400 rounded border border-[#30363d]">
+                  v0.0.1
+                </span>
+              </h1>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">Expense Tracker</h1>
-            <p className="text-sm text-slate-400 mt-1">Enter your password to unlock your ledger</p>
+
+            <div className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#090d13] border border-[#30363d] text-emerald-400 font-mono text-[10px]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span>SYS.ONLINE</span>
+            </div>
           </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mb-6 p-3.5 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm flex items-center gap-2.5 animate-shake">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-5 h-5 shrink-0"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>{error}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Card Body */}
+          <div className="p-6 sm:p-8 space-y-6">
             <div>
-              <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-                Access Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  autoFocus
-                  placeholder="••••••••••••"
-                  className="w-full bg-slate-950/70 border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all text-base pr-11"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 transition-colors p-1"
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                >
-                  {showPassword ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                  )}
-                </button>
+              <div className="flex items-center gap-2 text-[11px] font-mono text-cyan-400 uppercase tracking-wider mb-1 font-semibold">
+                <span className="w-1.5 h-1.5 bg-cyan-400 rounded-sm" />
+                <span>[AUTHENTICATION : REQUIRED]</span>
               </div>
+              <p className="text-xs font-mono text-slate-400 leading-relaxed">
+                Enter your master password to unlock your multi-currency ledger and statement vault.
+              </p>
             </div>
 
-            <button
-              type="submit"
-              disabled={isPending}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-all shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
-            >
-              {isPending ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Unlocking...</span>
-                </>
-              ) : (
-                <>
-                  <span>Sign In</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </>
-              )}
-            </button>
-          </form>
+            {/* Error Banner */}
+            {error && (
+              <div className="bg-rose-950/40 border border-rose-500/50 rounded-lg p-3 text-xs font-mono text-rose-300 flex items-start gap-2">
+                <span className="font-bold">[ERR]</span>
+                <span>{error}</span>
+              </div>
+            )}
 
-          {/* Footer Badge */}
-          <div className="mt-8 pt-6 border-t border-slate-800/80 text-center">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-slate-800/60 text-slate-400 border border-slate-700/50">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-              Self-Hosted • Home Network
-            </span>
+            {/* Login Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-[11px] font-mono font-medium text-slate-400 uppercase tracking-wider mb-1.5"
+                >
+                  ACCESS_KEY // PASSWORD
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    autoFocus
+                    placeholder="••••••••••••"
+                    className="w-full bg-[#161b22] border border-[#30363d] focus:border-cyan-400 rounded-lg px-3.5 py-2.5 text-sm font-mono text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-cyan-400/50 transition-colors pr-16"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-mono text-slate-400 hover:text-slate-200 px-1.5 py-0.5 rounded bg-[#090d13] border border-[#30363d] hover:border-slate-500 transition-colors cursor-pointer"
+                  >
+                    {showPassword ? '[HIDE]' : '[SHOW]'}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isPending}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white font-mono text-xs font-bold py-2.5 px-4 rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-xs"
+              >
+                {isPending ? (
+                  <>
+                    <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+                    <span>[AUTHENTICATING...]</span>
+                  </>
+                ) : (
+                  <>
+                    <span>[UNLOCK_SESSION]</span>
+                    <span>→</span>
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Footer Information */}
+            <div className="pt-4 border-t border-[#21262d] flex items-center justify-between text-[10px] font-mono text-slate-500">
+              <span>SELF_HOSTED • ISOLATED</span>
+              <span>AES / HMAC_SHA256</span>
+            </div>
           </div>
         </div>
       </div>
