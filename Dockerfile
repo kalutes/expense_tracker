@@ -1,6 +1,6 @@
 # Stage 1: Base image with Node 22 and Poppler utilities (for pdftotext)
 FROM node:22-alpine AS base
-RUN apk add --no-cache poppler-utils libc6-compat python3 make g++
+RUN apk add --no-cache poppler-utils libc6-compat python3 make g++ su-exec
 
 # Stage 2: Install dependencies
 FROM base AS deps
@@ -37,10 +37,12 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-USER nextjs
+# Copy entrypoint script to fix host volume permissions and run as nextjs user
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000
 
 VOLUME ["/app/data"]
 
-CMD ["node", "server.js"]
+ENTRYPOINT ["docker-entrypoint.sh"]

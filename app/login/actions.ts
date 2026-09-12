@@ -35,7 +35,7 @@ export async function loginAction(
 
   cookieStore.set(SESSION_COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.ENABLE_SECURE_COOKIE === 'true',
     sameSite: 'lax',
     maxAge: SESSION_MAX_AGE,
     path: '/',

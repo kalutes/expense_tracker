@@ -102,12 +102,11 @@ export function StatementImporter({
       }
 
       setIsProcessing(false);
-      router.refresh();
       if (onImportComplete) {
         onImportComplete();
       }
     },
-    [router, onImportComplete]
+    [onImportComplete]
   );
 
   const handleDrag = useCallback((e: React.DragEvent) => {
@@ -320,8 +319,7 @@ export function StatementImporter({
               <button
                 type="button"
                 onClick={() => {
-                  router.refresh();
-                  if (onClose) onClose();
+                  window.location.reload();
                 }}
                 className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-mono text-xs font-bold rounded-lg transition-colors cursor-pointer flex items-center gap-2"
               >

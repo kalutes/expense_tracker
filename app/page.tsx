@@ -1,5 +1,5 @@
 import { getAccounts, getTransactions } from '../lib/db/repository';
-import { logoutAction } from './login/actions';
+import { LogoutButton } from '../components/LogoutButton';
 import { TransactionLedger } from '../components/TransactionLedger';
 import { ImportModalTrigger } from '../components/ImportModalTrigger';
 import { StatementImporter } from '../components/StatementImporter';
@@ -90,14 +90,7 @@ export default async function HomePage() {
 
             <ImportModalTrigger />
 
-            <form action={logoutAction}>
-              <button
-                type="submit"
-                className="px-2.5 py-1 text-xs font-mono text-slate-300 hover:text-white bg-[#161b22] hover:bg-[#21262d] border border-[#30363d] hover:border-slate-500 rounded transition-all cursor-pointer flex items-center gap-1.5"
-              >
-                <span>[LOGOUT]</span>
-              </button>
-            </form>
+            <LogoutButton />
           </div>
         </div>
       </header>

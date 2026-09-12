@@ -28,6 +28,9 @@ export async function middleware(request: NextRequest) {
 
   // All other pages require authentication
   if (!isValid) {
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized. Please log in.' }, { status: 401 });
+    }
     const loginUrl = new URL('/login', request.url);
     return NextResponse.redirect(loginUrl);
   }

@@ -1,11 +1,38 @@
 'use client';
 
-import { useActionState, useState } from 'react';
-import { loginAction } from './actions';
+import React, { useState } from 'react';
 
 export default function LoginPage() {
-  const [state, formAction, isPending] = useActionState(loginAction, null);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsPending(true);
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Login failed');
+        setIsPending(false);
+      } else {
+        window.location.href = '/';
+      }
+    } catch {
+      setError('Network error connecting to server');
+      setIsPending(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-950 px-4 py-12 text-slate-100">
@@ -41,7 +68,7 @@ export default function LoginPage() {
           </div>
 
           {/* Error Message */}
-          {state?.error && (
+          {error && (
             <div className="mb-6 p-3.5 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400 text-sm flex items-center gap-2.5 animate-shake">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -55,12 +82,12 @@ export default function LoginPage() {
                   clipRule="evenodd"
                 />
               </svg>
-              <span>{state.error}</span>
+              <span>{error}</span>
             </div>
           )}
 
           {/* Form */}
-          <form action={formAction} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="password" className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
                 Access Password
@@ -69,6 +96,8 @@ export default function LoginPage() {
                 <input
                   id="password"
                   name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   type={showPassword ? 'text' : 'password'}
                   required
                   autoFocus

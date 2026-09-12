@@ -9,7 +9,7 @@ const DEFAULT_DB_PATH = path.resolve(process.cwd(), 'data/expense_tracker.db');
 function getDatabasePath(): string {
   if (process.env.DATABASE_URL) {
     const raw = process.env.DATABASE_URL.replace(/^file:/, '');
-    return path.resolve(process.cwd(), raw);
+    return path.isAbsolute(raw) ? raw : path.resolve(process.cwd(), raw);
   }
   return DEFAULT_DB_PATH;
 }
