@@ -1,0 +1,19 @@
+services:
+  expense-tracker:
+    image: expense-tracker:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense-tracker
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - APP_PASSWORD=${APP_PASSWORD:-admin}
+      - DATABASE_URL=file:/app/data/expense_tracker.db
+      - STATEMENTS_DIR=/app/data/statements
+    volumes:
+      # Persistent storage dataset on TrueNAS for SQLite DB and organized statements
+      - ./data:/app/data
