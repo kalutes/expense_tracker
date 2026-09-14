@@ -3,6 +3,10 @@
 :root {
   --background: #090d13;
   --foreground: #e6edf3;
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
 }
 
 @theme inline {
@@ -12,11 +16,22 @@
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+html {
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  padding-left: var(--sal);
+  padding-right: var(--sar);
+  background-color: var(--background);
+  color-scheme: dark;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Custom scrollbars for flat cyber aesthetic */
@@ -34,3 +49,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #30363d;
 }
+
+/* Safe area padding utilities */
+.safe-pt {
+  padding-top: max(1rem, var(--sat));
+}
+.safe-pb {
+  padding-bottom: max(1rem, var(--sab));
+}
+

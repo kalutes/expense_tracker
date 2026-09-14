@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
 import { FileImportResult } from '@/lib/importer';
 
 interface StatementImporterProps {
@@ -17,7 +16,6 @@ export function StatementImporter({
   onClose,
   onImportComplete,
 }: StatementImporterProps) {
-  const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [dragActive, setDragActive] = useState(false);
